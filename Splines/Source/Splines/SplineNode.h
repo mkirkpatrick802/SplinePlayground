@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Spline)
 	FVector GetPointAtTime(const float Time) const;
 
+	UFUNCTION(BlueprintCallable, Category = Spline)
+	FVector GetPointDirectionAtTime(const float Time) const;
+
 private:
 
 	// Debugging
@@ -53,6 +56,8 @@ private:
 
 	float T;
 	float SplineLength = 0;
+
+	float TimeSkip = .05f;
 
 public:
 

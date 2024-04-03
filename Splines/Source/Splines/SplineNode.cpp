@@ -43,7 +43,7 @@ void ASplineNode::Tick(float DeltaTime)
 	T = 0;
 	while(T <= 1)
 	{
-		T += .05f;
+		T += TimeSkip;
 		if (!ConnectedNode) continue;
 
 		FVector P = GetPointAtTime(T);
@@ -84,4 +84,22 @@ FVector ASplineNode::GetPointAtTime(const float Time) const
 	const FVector e = CalculatePValue(d, c, Time, DrawDebugLines);
 
 	return CalculatePValue(d, e, Time, DrawDebugLines);
+}
+
+FVector ASplineNode::GetPointDirectionAtTime(const float Time) const
+{
+	float PastTime = 0;
+	if (Time - TimeSkip > 0)
+		PastTime = Time - TimeSkip;
+
+	const FVector PStart = GetPointAtTime(PastTime);
+	const FVector PEnd = GetPointAtTime(Time);
+
+	const FVector Direction = PEnd - PStart;
+
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(5, 1, FColor::Blue, 
+			FString::Printf(TEXT("Direction: %f, %f, %f"), Direction.X, Direction.Y, Direction.Z));
+
+	return Direction;
 }
